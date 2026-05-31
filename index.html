@@ -87,6 +87,17 @@
     </section>
   </main>
 
+  <!--I added in 3rd party tracking script here-->
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+    <script>
+      window.TrackJS && TrackJS.install({ 
+        token: "550e9e1102ac4b15980013391371781a",
+        application: "error-tracker",
+        forwardingDomain: ""
+        // for more configuration options, see https://docs.trackjs.com
+      });
+  </script>
+
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -101,7 +112,113 @@
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
-    // You may move this JS to another file if you wish
+    // You may move this JS to another file if you wish 
+    class MissingClassError extends Error {
+      constructor(message) {
+        super(message); 
+        this.name = "Missing Class"; 
+      }
+    }
+
+    const consoleLogButton = errorBtns[0];
+    consoleLogButton.addEventListener("click", function(){
+      console.log("Console Log Demo");
+    });
+    const consoleErrorButton = errorBtns[1];
+    consoleErrorButton.addEventListener("click", function(){
+      console.error("Console Error Demo");
+    });
+    const consoleCountButton = errorBtns[2];
+    consoleCountButton.addEventListener("click", function(){
+      console.count("Count Button: ");
+    });
+    const consoleWarnButton = errorBtns[3];
+    consoleWarnButton.addEventListener("click", function(){
+      console.warn("Console Warn Button");
+    });
+    const consoleAssertButton = errorBtns[4];
+    consoleAssertButton.addEventListener("click", function(){
+      let number = 2;
+      console.assert(2===3,`number: ${number}, errorMsg: "The number does not equal 3"`)
+      try {
+        if(number.length === undefined) {
+          throw new Error("number.length is undefined");
+        }
+        console.log(number.length);
+      } 
+      catch(e) {
+        console.log("tried to access number.length and cannot access number.length");
+      }
+      finally {
+        number = null;
+      }
+    });
+    const consoleClearButton = errorBtns[5];
+    consoleClearButton.addEventListener("click", function(){
+      console.clear();
+    });
+    const consoleDirButton = errorBtns[6];
+    consoleDirButton.addEventListener("click", function(){
+      console.dir(consoleDirButton);
+    });
+    const consoleDirxmlButton = errorBtns[7];
+    consoleDirxmlButton.addEventListener("click", function(){
+      console.dirxml(consoleDirxmlButton);
+    });
+    const consoleGroupStartButton = errorBtns[8];
+    consoleGroupStartButton.addEventListener("click", function(){
+      console.group("console.group");
+    });
+    const consoleGroupEndButton = errorBtns[9];
+    consoleGroupEndButton.addEventListener("click", function(){
+      console.groupEnd("console.group");
+    });
+    const consoleTableButton = errorBtns[10];
+    consoleTableButton.addEventListener("click", function(){
+      function className(title,number) {
+        this.title = title;
+        this.number = number;
+      }
+
+      const theory = new className("Theory of Computation",105);
+      const swe = new className("Software Engineering",110);
+      const systems = new className("Operating Systems",120);
+
+      const data = [theory,systems];
+      console.table(data);
+      if(data.includes(swe) === false) {
+        throw new MissingClassError("Missing CSE 110 Software Engineering class in data table!")
+      }
+    });
+    const timerButton = errorBtns[11];
+    timerButton.addEventListener("click", function(){
+      console.time("Timer Button: "); 
+    });
+    const endTimerButton = errorBtns[12];
+    endTimerButton.addEventListener("click", function(){
+      console.timeEnd("Timer Button: ");
+    });
+    const traceButton = errorBtns[13];
+    traceButton.addEventListener("click", function(){
+      function handleBtnClick() {
+        console.trace(traceButton);
+      }
+      function deep() {
+        handleBtnClick();
+      }
+      function deeper() {
+        deep();
+      }
+      function deepest() {
+        deeper();
+      }
+      deepest();
+    });
+    const globalErrorButton = errorBtns[14]; 
+    globalErrorButton.addEventListener("click", function(){
+      const e = new Error("you triggered a global error!")
+      reportError(e);
+    });
   </script>
 </body>
 
